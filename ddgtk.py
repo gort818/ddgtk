@@ -31,7 +31,7 @@ class launcher:
         self.builder = Gtk.Builder()
         #GObject.type_register(Vte.Terminal)
 
-        self.builder.add_from_file("/home/alessandro/Projects/ddgtk/ddgtk.glade")
+        self.builder.add_from_file("ddgtk.glade")
 
         self.builder.connect_signals(self)
         
