@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Vte, GLib
@@ -29,12 +31,14 @@ class launcher:
         self.builder = Gtk.Builder()
         #GObject.type_register(Vte.Terminal)
 
-        self.builder.add_from_file("ddgtk.glade")
+        self.builder.add_from_file("/home/alessandro/Projects/ddgtk/ddgtk.glade")
 
         self.builder.connect_signals(self)
         
         self.window = self.builder.get_object('window')
         self.window.connect('destroy', lambda w: Gtk.main_quit())
+        icontheme = Gtk.IconTheme.get_default()
+        self.icon = icontheme.load_icon(Gtk.STOCK_FLOPPY, 128, 0)
         self.combo=self.builder.get_object('combo')
         self.box=self.builder.get_object('box')
         self.expander=self.builder.get_object('expander')
@@ -47,7 +51,9 @@ class launcher:
         self.create_disk_message=self.builder.get_object('create_disk_message')
         self.confirm=self.builder.get_object('confirm')
         self.confirm_ok=self.builder.get_object('confirm_ok')
+        a=0
         self.confirm_cancel=self.builder.get_object("confirm_cancel")
+        self.terminal.connect('child-exited',self.done)
         self.filter=Gtk.FileFilter()
         self.filter.set_name("ISO files")
         self.filter.add_pattern("*.iso")
@@ -55,12 +61,13 @@ class launcher:
         self.no_file_message=self.builder.get_object('no_file_message')
         self.ok_no_file_button=self.builder.get_object('ok_no_file_button')
         self.warning_label=self.builder.get_object('warning_label')
+        self.create_disk_label=self.builder.get_object('create_disk_label')
         self.window.show()
         self.pop_combo()
         self.terminal.spawn_sync(
             Vte.PtyFlags.DEFAULT,
             os.environ['HOME'],
-            ["/bin/bash"],
+            ['/bin/sh'],
             [],
             GLib.SpawnFlags.DO_NOT_REAP_CHILD,
             None,
@@ -98,10 +105,17 @@ class launcher:
         #call([, 'ls'])
     def dd(self):
         self.create_disk_message.show()
+        clear="stty -echo ;clear \n"
+        wait="echo 'Writing to disk please wait!'\n"
         self.umount= "umount " + self.device+"*" + " &>/dev/null \n"
-        self.command = "pkexec dd bs=4M if="+self.filename+" of="+self.device+" status=progress \n"
+        self.command = "pkexec dd if="+self.filename+" of="+self.device+" status=progress && sync;exit \n"
+        self.terminal.feed_child(clear,-1)
+        self.terminal.feed_child(wait,-1)
         self.terminal.feed_child(self.umount,-1)
+        #self.terminal.feed_child(cmd,-1)
         self.terminal.feed_child(self.command,-1)
+        
+        #self.terminal.set_input_enabled(False)
         
     def on_expander_activate(self,widget):
         self.terminal.set_rewrap_on_resize(True)
@@ -111,6 +125,7 @@ class launcher:
         self.no_file_message.hide()
     def on_done_button_clicked(self,widget):
         self.create_disk_message.hide()
+        self.terminal.hide()
     def on_refresh_clicked(self,widget):
         self.window.destroy()
         main()
@@ -120,11 +135,12 @@ class launcher:
     def on_confirm_cancel_clicked(self,widget):
         self.confirm.hide()
         return
-    def done(self):
-        self.test="echo done\n"
         
-        self.terminal.feed_child(self.test,-1)
-        return True
+    def done (self,terminal,a):
+        print("All done")
+        self.done_button.set_visible(True)
+        self.create_disk_label.set_text("Finshed!\n Click the done Button :)")
+        
         
 def main():
 

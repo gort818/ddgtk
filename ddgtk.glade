@@ -11,6 +11,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">DD Bootable Disk Creator</property>
     <property name="window_position">center-always</property>
+    <property name="icon_name">applications-utilities</property>
     <property name="gravity">center</property>
     <property name="show_menubar">False</property>
     <child>
@@ -267,11 +268,11 @@ are you sure you want to continue?</property>
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="create_disk_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_top">20</property>
-            <property name="label" translatable="yes">Creating Bootable Disk this my take a while.
+            <property name="label" translatable="yes">Creating Bootable Disk this may take a while.
 
 When process is finished close this window</property>
           </object>
