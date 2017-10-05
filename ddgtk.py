@@ -8,7 +8,7 @@ from gi.repository import Gtk, Vte, GLib
 from subprocess import call
 import os
 def get_data():
-    drives="""lsblk -l -o name,size,model,hotplug  | tr -s "\n "| tr -s " " | grep -v MODEL | grep '1$' | grep -v 'sd.[0-9]' | sed 's/^/\/dev\//' | sed 's/.$//'"""
+    drives="""lsblk -l -o name,size,model,hotplug  | tr -s "\n "| tr -s " " | grep -v MODEL | grep '1$' | grep -v 'sd.[0-9]' | grep sd | sed 's/^/\/dev\//' | sed 's/.$//'"""
     info=os.popen(drives)
 
     now=info.read()
