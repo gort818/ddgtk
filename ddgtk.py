@@ -126,6 +126,8 @@ class launcher:
     def on_done_button_clicked(self,widget):
         self.create_disk_message.hide()
         self.terminal.hide()
+        self.window.destroy()
+        main()
     def on_refresh_clicked(self,widget):
         self.window.destroy()
         main()
@@ -137,6 +139,11 @@ class launcher:
         return
         
     def done (self,terminal,a):
+        if a is not 0:
+            print("Authentication error or command error")
+            self.create_disk_message.destroy()
+            self.window.destroy()
+            main()
         print("All done")
         self.done_button.set_visible(True)
         self.create_disk_label.set_text("Finshed!\n Click the done Button :)")
