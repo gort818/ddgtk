@@ -86,6 +86,8 @@ class launcher:
         return my_dict
     def on_combo_changed(self,widget):
         self.device=(self.combo.get_active_text())
+        if self.device is None:
+            return
         self.device=self.device.split(' ')[0]
         call(["lsblk",self.device])
     def on_start_clicked(self,widget):
@@ -130,8 +132,12 @@ class launcher:
         self.window.destroy()
         main()
     def on_refresh_clicked(self,widget):
-        self.window.destroy()
-        main()
+        self.combo.hide()
+        self.combo.remove_all()
+        self.pop_combo()
+        self.combo.show()
+        #self.window.destroy()
+        #main()
     def on_confirm_ok_clicked(self,widget):
         self.confirm.hide()
         self.dd()
