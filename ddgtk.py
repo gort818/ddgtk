@@ -1,14 +1,14 @@
 #!/usr/bin/python
 
 import gi
-gi.require_version('Gtk', '3.0')
+gi.require_version('Gtk', '3.0') 
 gi.require_version('Vte', '2.91')
 from gi.repository import Gtk, Vte, GLib
 
 from subprocess import call
 import os
 def get_data():
-    drives="""lsblk -l -o name,size,model,hotplug  | tr -s "\n "| tr -s " " | grep -v MODEL | grep '1$' | grep -v 'sd.[0-9]' | grep sd | sed 's/^/\/dev\//' | sed 's/.$//'"""
+    drives="""lsblk -l -o name,size,model,hotplug  | tr -s "\n "| tr -s " " | grep -v MODEL | grep '1$' | grep -v 'sd.[0-9]'| grep sd | sed 's/^/\/dev\//' | sed 's/.$//'"""
     info=os.popen(drives)
 
     now=info.read()
@@ -32,7 +32,7 @@ class launcher:
         self.builder = Gtk.Builder()
         #GObject.type_register(Vte.Terminal)
 
-        self.builder.add_from_file("ddgtk.glade")
+        self.builder.add_from_file("/home/alessandro/Projects/ddgtk/ddgtk.glade")
 
         self.builder.connect_signals(self)
         
@@ -132,12 +132,12 @@ class launcher:
         self.window.destroy()
         main()
     def on_refresh_clicked(self,widget):
+        #self.window.destroy()
+        #main()
         self.combo.hide()
         self.combo.remove_all()
         self.pop_combo()
         self.combo.show()
-        #self.window.destroy()
-        #main()
     def on_confirm_ok_clicked(self,widget):
         self.confirm.hide()
         self.dd()
