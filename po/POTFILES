@@ -1,0 +1,9 @@
+data/org.gnome.Ddgtk.desktop.in
+data/org.gnome.Ddgtk.appdata.xml.in
+data/org.gnome.Ddgtk.gschema.xml
+src/window.ui
+
+
+
+src/main.py
+src/window.py
