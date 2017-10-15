@@ -2,7 +2,7 @@
 Name=ddgtk
 Exec=ddgtk
 Comment=DDgtk a bootable usb creator using dd
-Icon=drive=removable-media
+Icon=drive-removable-media
 Terminal=false
 Type=Application
 Categories=GTK;
