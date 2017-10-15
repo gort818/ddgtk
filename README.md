@@ -21,6 +21,8 @@ Note: To buld you must install meson
   4. cd build
   5. ninja
   6. sudo ninja install
+  
+  
 If you want to uninstall:
      sudo ninja uninstall
      
