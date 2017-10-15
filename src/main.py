@@ -1,7 +1,22 @@
-#!/usr/bin/python
+# main.py
+#
+# Copyright (C) 2017 Alessandro
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import gi
-gi.require_version('Gtk', '3.0') 
+gi.require_version('Gtk', '3.0')
 gi.require_version('Vte', '2.91')
 from gi.repository import Gtk, Vte, GLib
 
@@ -21,21 +36,16 @@ def get_data():
     for i in range(len(now)):
         new_list.append(i)
     my_dict=dict(zip(new_list,now))
-    
+
     return my_dict
 
-class launcher:
+
+class Application():
     def __init__(self):
-        
-        self.terminal = Vte.Terminal()
-
         self.builder = Gtk.Builder()
-        #GObject.type_register(Vte.Terminal)
-
-        self.builder.add_from_file("/home/alessandro/Projects/ddgtk/ddgtk.glade")
-
+        self.builder.add_from_resource('/org/gnome/Ddgtk/window.ui')
         self.builder.connect_signals(self)
-        
+        self.terminal = Vte.Terminal()
         self.window = self.builder.get_object('window')
         self.window.connect('destroy', lambda w: Gtk.main_quit())
         icontheme = Gtk.IconTheme.get_default()
@@ -74,7 +84,6 @@ class launcher:
             None,
             None,
             )
-        #self.terminal.show()
     def on_file_set(self,widget):
         print(self.file.get_filename())
         self.filename=self.file.get_filename()
@@ -91,7 +100,7 @@ class launcher:
         self.device=self.device.split(' ')[0]
         call(["lsblk",self.device])
     def on_start_clicked(self,widget):
-        
+
         if (self.file.get_filename()) == None:
             print("No file selected")
             self.no_file_message.show()
@@ -112,18 +121,20 @@ class launcher:
         wait="echo 'Writing to disk please wait!'\n"
         self.umount= "umount " + self.device+"*" + " &>/dev/null \n"
         self.command = "pkexec dd if="+self.filename+" of="+self.device+" status=progress && sync;exit \n"
+
         self.terminal.feed_child(clear,-1)
         self.terminal.feed_child(wait,-1)
         self.terminal.feed_child(self.umount,-1)
         #self.terminal.feed_child(cmd,-1)
+        self.terminal.unselect_all()
         self.terminal.feed_child(self.command,-1)
-        
+
         #self.terminal.set_input_enabled(False)
-        
+
     def on_expander_activate(self,widget):
         self.terminal.set_rewrap_on_resize(True)
         self.terminal.show()
-        
+
     def on_no_file_button_clicked(self,widget):
         self.no_file_message.hide()
     def on_done_button_clicked(self,widget):
@@ -144,7 +155,7 @@ class launcher:
     def on_confirm_cancel_clicked(self,widget):
         self.confirm.hide()
         return
-        
+
     def done (self,terminal,a):
         if a is not 0:
             print("Authentication error or command error")
@@ -154,13 +165,9 @@ class launcher:
         print("All done")
         self.done_button.set_visible(True)
         self.create_disk_label.set_text("Finshed!\n Click the done Button :)")
-        
-        
+
+
+
 def main():
-
-    launcher()
+    Application()
     Gtk.main()
-
-
-if __name__ == '__main__':
-    main()
