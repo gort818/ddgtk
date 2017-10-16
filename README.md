@@ -17,7 +17,8 @@ Other packages to come shortly
 
 
 <b>Building manually</b>
-Note: To buld you must install meson
+
+Note: To build you must install meson
   1. Download the source
   2. Extract the source
   3. meson build
