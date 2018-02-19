@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.1 -->
+<!-- Generated with glade 3.20.3 -->
 <interface>
   <requires lib="gtk+" version="3.16"/>
   <object class="GtkFileFilter" id="filefilter1">
@@ -156,6 +156,69 @@
           </packing>
         </child>
         <child>
+          <object class="GtkButtonBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">start</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="width_request">-1</property>
+                <property name="height_request">-1</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">4</property>
+                <property name="margin_right">13</property>
+                <property name="label" translatable="yes">Options        </property>
+                <property name="justify">fill</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBoxText" id="option_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">3</property>
+                <property name="active">0</property>
+                <items>
+                  <item translatable="yes"> </item>
+                  <item translatable="yes">bs=1M</item>
+                  <item translatable="yes">bs=2M</item>
+                  <item translatable="yes">bs=4M</item>
+                </items>
+                <signal name="changed" handler="on_option_box_changed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="start">
             <property name="label" translatable="yes">Start</property>
             <property name="visible">True</property>
@@ -172,7 +235,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="position">7</property>
           </packing>
         </child>
       </object>
@@ -181,7 +244,7 @@
       <object class="GtkHeaderBar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="title">DDgtk Bootable Disk Creator</property>
+        <property name="title">DDgtk Bootable Disk Creator!</property>
         <property name="show_close_button">True</property>
         <child>
           <placeholder/>

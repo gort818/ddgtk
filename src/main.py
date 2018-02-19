@@ -51,6 +51,7 @@ class Application():
         icontheme = Gtk.IconTheme.get_default()
         self.icon = icontheme.load_icon(Gtk.STOCK_FLOPPY, 128, 0)
         self.combo=self.builder.get_object('combo')
+        self.option_box=self.builder.get_object('option_box')
         self.box=self.builder.get_object('box')
         self.expander=self.builder.get_object('expander')
         self.s_window=self.builder.get_object('s_window')
@@ -78,7 +79,7 @@ class Application():
         self.terminal.spawn_sync(
             Vte.PtyFlags.DEFAULT,
             os.environ['HOME'],
-            ['/bin/sh'],
+            ['/bin/bash'],
             [],
             GLib.SpawnFlags.DO_NOT_REAP_CHILD,
             None,
@@ -99,6 +100,11 @@ class Application():
             return
         self.device=self.device.split(' ')[0]
         call(["lsblk",self.device])
+    def on_option_box_changed(self,widget):
+        print("option changed")
+        self.option=(self.option_box.get_active_text())
+        print(self.option)
+
     def on_start_clicked(self,widget):
 
         if (self.file.get_filename()) == None:
@@ -115,19 +121,21 @@ class Application():
         #self.command = "pkexec cat /etc/shadow \n"
         #self.terminal.feed_child(self.command,-1)
         #call([, 'ls'])
+
     def dd(self):
+        self.option=(self.option_box.get_active_text())
         self.create_disk_message.show()
         clear="stty -echo ;clear \n"
         wait="echo 'Writing to disk please wait!'\n"
         self.umount= "umount " + self.device+"*" + " &>/dev/null \n"
-        self.command = "pkexec dd if="+self.filename+" of="+self.device+" status=progress && sync;exit \n"
-
+        self.command = "pkexec dd if="+self.filename+" of="+self.device + " " +self.option+" status=progress && sync;exit \n"
+        print(self.command)
         self.terminal.feed_child(clear,-1)
-        self.terminal.feed_child(wait,-1)
         self.terminal.feed_child(self.umount,-1)
         #self.terminal.feed_child(cmd,-1)
         self.terminal.unselect_all()
         self.terminal.feed_child(self.command,-1)
+
 
         #self.terminal.set_input_enabled(False)
 
