@@ -14,13 +14,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import gi
+import time
 gi.require_version('Gtk', '3.0')
 gi.require_version('Vte', '2.91')
-from gi.repository import Gtk, Vte, GLib
+from gi.repository import Gtk, GLib,Gio
 
-from subprocess import call
+from subprocess import call,run,PIPE,Popen
 import os
 def get_data():
     drives="""lsblk -l -o name,size,model,hotplug  | tr -s "\n "| tr -s " " | grep -v MODEL | grep '1$' | grep -v 'sd.[0-9]'| grep sd | sed 's/^/\/dev\//' | sed 's/.$//'"""
@@ -40,12 +40,13 @@ def get_data():
     return my_dict
 
 
+
+
 class Application():
     def __init__(self):
         self.builder = Gtk.Builder()
         self.builder.add_from_resource('/org/gnome/Ddgtk/window.ui')
         self.builder.connect_signals(self)
-        self.terminal = Vte.Terminal()
         self.window = self.builder.get_object('window')
         self.window.connect('destroy', lambda w: Gtk.main_quit())
         icontheme = Gtk.IconTheme.get_default()
@@ -55,17 +56,14 @@ class Application():
         self.box=self.builder.get_object('box')
         self.expander=self.builder.get_object('expander')
         self.s_window=self.builder.get_object('s_window')
-        self.term=self.builder.get_object('term')
-        self.s_window.add(self.terminal)
+        self.spinner=self.builder.get_object('spinner')
         self.file = self.builder.get_object('file')
         self.refresh=self.builder.get_object('refresh')
         self.done_button=self.builder.get_object('done_button')
         self.create_disk_message=self.builder.get_object('create_disk_message')
         self.confirm=self.builder.get_object('confirm')
         self.confirm_ok=self.builder.get_object('confirm_ok')
-        a=0
         self.confirm_cancel=self.builder.get_object("confirm_cancel")
-        self.terminal.connect('child-exited',self.done)
         self.filter=Gtk.FileFilter()
         self.filter.set_name("ISO files")
         self.filter.add_pattern("*.iso")
@@ -76,15 +74,7 @@ class Application():
         self.create_disk_label=self.builder.get_object('create_disk_label')
         self.window.show()
         self.pop_combo()
-        self.terminal.spawn_sync(
-            Vte.PtyFlags.DEFAULT,
-            os.environ['HOME'],
-            ['/bin/bash'],
-            [],
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-            None,
-            None,
-            )
+
     def on_file_set(self,widget):
         print(self.file.get_filename())
         self.filename=self.file.get_filename()
@@ -117,31 +107,20 @@ class Application():
         else:
             print("let's go")
             self.confirm.show()
-        #self.terminal.show()
-        #self.command = "pkexec cat /etc/shadow \n"
-        #self.terminal.feed_child(self.command,-1)
-        #call([, 'ls'])
 
     def dd(self):
-        self.option=(self.option_box.get_active_text())
         self.create_disk_message.show()
-        clear="stty -echo ;clear \n"
-        wait="echo 'Writing to disk please wait!'\n"
-        self.umount= "umount " + self.device+"*" + " &>/dev/null \n"
-        self.command = "pkexec dd if="+self.filename+" of="+self.device + " " +self.option+" status=progress && sync;exit \n"
+        self.option=(self.option_box.get_active_text())
+        #self.create_disk_message.show()
+        self.umount= self.device+"?*"
+        self.command = "if="+self.filename
+        self.command2= "of="+self.device
         print(self.command)
-        self.terminal.feed_child(clear,-1)
-        self.terminal.feed_child(self.umount,-1)
-        #self.terminal.feed_child(cmd,-1)
-        self.terminal.unselect_all()
-        self.terminal.feed_child(self.command,-1)
+        p = call(["umount " + self.umount],shell=True)
 
+        subprocess = Gio.Subprocess.new(['/usr/bin/pkexec','/usr/bin/dd', self.command,self.command2], Gio.SubprocessFlags.STDOUT_PIPE)
+        subprocess.wait_check_async(None, self.done)
 
-        #self.terminal.set_input_enabled(False)
-
-    def on_expander_activate(self,widget):
-        self.terminal.set_rewrap_on_resize(True)
-        self.terminal.show()
 
     def on_no_file_button_clicked(self,widget):
         self.no_file_message.hide()
@@ -164,16 +143,12 @@ class Application():
         self.confirm.hide()
         return
 
-    def done (self,terminal,a):
-        if a is not 0:
-            print("Authentication error or command error")
-            self.create_disk_message.destroy()
-            self.window.destroy()
-            main()
+    def done (self,subprocess,result):
+        subprocess.wait_check_finish(result)
         print("All done")
+        self.spinner.hide()
         self.done_button.set_visible(True)
         self.create_disk_label.set_text("Finshed!\n Click the done Button :)")
-
 
 
 def main():
