@@ -126,7 +126,6 @@ class Application():
         self.no_file_message.hide()
     def on_done_button_clicked(self,widget):
         self.create_disk_message.hide()
-        self.terminal.hide()
         self.window.destroy()
         main()
     def on_refresh_clicked(self,widget):
