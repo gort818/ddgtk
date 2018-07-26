@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.3 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.16"/>
   <object class="GtkFileFilter" id="filefilter1">
@@ -14,6 +14,17 @@
     <property name="icon_name">applications-utilities</property>
     <property name="gravity">center</property>
     <property name="show_menubar">False</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title">DDgtk Bootable Disk Creator!</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
     <child>
       <object class="GtkBox" id="box">
         <property name="visible">True</property>
@@ -71,7 +82,7 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -240,17 +251,6 @@
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="title">DDgtk Bootable Disk Creator!</property>
-        <property name="show_close_button">True</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-    </child>
   </object>
   <object class="GtkMessageDialog" id="confirm">
     <property name="can_focus">False</property>
@@ -260,6 +260,9 @@
     <property name="type_hint">dialog</property>
     <property name="deletable">False</property>
     <property name="transient_for">window</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -324,9 +327,6 @@ are you sure you want to continue?</property>
         </child>
       </object>
     </child>
-    <child>
-      <placeholder/>
-    </child>
   </object>
   <object class="GtkMessageDialog" id="create_disk_message">
     <property name="can_focus">False</property>
@@ -335,6 +335,9 @@ are you sure you want to continue?</property>
     <property name="default_height">115</property>
     <property name="type_hint">normal</property>
     <property name="transient_for">window</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -381,29 +384,10 @@ When process is finished close this window</property>
           </packing>
         </child>
         <child>
-          <object class="GtkExpander" id="expander">
+          <object class="GtkSpinner" id="spinner">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <signal name="activate" handler="on_expander_activate" swapped="no"/>
-            <child>
-              <object class="GtkScrolledWindow" id="s_window">
-                <property name="width_request">400</property>
-                <property name="height_request">200</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Show terminal output</property>
-              </object>
-            </child>
+            <property name="can_focus">False</property>
+            <property name="active">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -412,9 +396,6 @@ When process is finished close this window</property>
           </packing>
         </child>
       </object>
-    </child>
-    <child>
-      <placeholder/>
     </child>
   </object>
   <object class="GtkMessageDialog" id="no_file_message">
@@ -427,6 +408,9 @@ When process is finished close this window</property>
     <property name="deletable">False</property>
     <property name="transient_for">window</property>
     <property name="message_type">warning</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -471,9 +455,6 @@ When process is finished close this window</property>
           </packing>
         </child>
       </object>
-    </child>
-    <child>
-      <placeholder/>
     </child>
   </object>
 </interface>
