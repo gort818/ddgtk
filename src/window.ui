@@ -70,7 +70,7 @@
                 <property name="can_focus">False</property>
                 <property name="filter">filefilter1</property>
                 <property name="title" translatable="yes"/>
-                <property name="width_chars">35</property>
+                <property name="width_chars">0</property>
                 <signal name="file-set" handler="on_file_set" swapped="no"/>
               </object>
               <packing>
