@@ -59,19 +59,30 @@
                 </attributes>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
+                <property name="non_homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <object class="GtkFileChooserButton" id="file">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="filter">filefilter1</property>
-                <property name="title" translatable="yes"/>
-                <property name="width_chars">0</property>
-                <signal name="file-set" handler="on_file_set" swapped="no"/>
+                <child>
+                  <object class="GtkFileChooserButton" id="file">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="title" translatable="yes"/>
+                    <signal name="file-set" handler="on_file_set" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>

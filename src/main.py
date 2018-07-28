@@ -78,6 +78,9 @@ class Application():
     def on_file_set(self,widget):
         print(self.file.get_filename())
         self.filename=self.file.get_filename()
+        file_width=len(os.path.basename(self.filename))
+        print(file_width)
+        self.file.set_width_chars (file_width)
     def pop_combo(self):
         my_dict=get_data()
         #self.combo.insert_text(now[0],now[1])
