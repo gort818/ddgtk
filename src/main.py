@@ -17,7 +17,7 @@
 import gi
 import time
 gi.require_version('Gtk', '3.0')
-gi.require_version('Vte', '2.91')
+#gi.require_version('Vte', '2.91')
 from gi.repository import Gtk, GLib,Gio
 
 from subprocess import call,run,PIPE,Popen
@@ -50,7 +50,7 @@ class Application():
         self.window = self.builder.get_object('window')
         self.window.connect('destroy', lambda w: Gtk.main_quit())
         icontheme = Gtk.IconTheme.get_default()
-        self.icon = icontheme.load_icon(Gtk.STOCK_FLOPPY, 128, 0)
+        self.icon = icontheme.load_icon(drive-removable-media, 128, 0)
         self.combo=self.builder.get_object('combo')
         self.option_box=self.builder.get_object('option_box')
         self.box=self.builder.get_object('box')
