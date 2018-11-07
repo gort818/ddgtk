@@ -12,7 +12,6 @@
     <property name="title" translatable="yes">DD Bootable Disk Creator</property>
     <property name="window_position">none</property>
     <property name="icon_name">applications-utilities</property>
-    <property name="gravity">center</property>
     <property name="show_menubar">False</property>
     <child type="titlebar">
       <object class="GtkHeaderBar">
